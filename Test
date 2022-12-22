@@ -1,0 +1,250 @@
+bool __fastcall ABase::EncryptedIniFileImpl::Load(ABase::EncryptedIniFileImpl *this)
+{
+  pthread_mutex_t *v2; // x0
+  bool v3; // w0
+  _BOOL4 v4; // w26
+  _QWORD *v5; // x0
+  _QWORD *v6; // x0
+  char *v7; // x22
+  _QWORD *v8; // x0
+  char *v9; // x0
+  __int64 v10; // x2
+  __int64 v11; // x3
+  __int64 v12; // x4
+  __int64 v13; // x5
+  __int64 v14; // x6
+  __int64 v15; // x7
+  _QWORD *v16; // x0
+  char *v18; // x28
+  int *v19; // x5
+  __int64 v20; // x6
+  __int64 v21; // x7
+  __int64 *v22; // x24
+  __int64 *v23; // x1
+  __int64 *i; // x22
+  __int64 *v25; // x0
+  __int64 v26; // [xsp+0h] [xbp+0h]
+  __int64 *v27; // [xsp+68h] [xbp+68h]
+  unsigned int v28; // [xsp+7Ch] [xbp+7Ch] BYREF
+  pthread_mutex_t *v29; // [xsp+80h] [xbp+80h] BYREF
+  char *v30; // [xsp+88h] [xbp+88h] BYREF
+  char *v31; // [xsp+90h] [xbp+90h] BYREF
+  __int64 v32; // [xsp+98h] [xbp+98h] BYREF
+  unsigned __int16 v33; // [xsp+A0h] [xbp+A0h] BYREF
+  unsigned __int16 v34; // [xsp+A2h] [xbp+A2h]
+  int v35; // [xsp+A4h] [xbp+A4h]
+  unsigned int v36; // [xsp+A8h] [xbp+A8h]
+  _WORD v37[34]; // [xsp+B0h] [xbp+B0h] BYREF
+  unsigned __int16 v38; // [xsp+F4h] [xbp+F4h]
+  __int16 v39; // [xsp+F6h] [xbp+F6h] BYREF
+  _QWORD v40[45]; // [xsp+108h] [xbp+108h] BYREF
+  _QWORD v41[15]; // [xsp+270h] [xbp+270h] BYREF
+  __int64 v42[50]; // [xsp+2E8h] [xbp+2E8h] BYREF
+  _BYTE v43[16]; // [xsp+478h] [xbp+478h] BYREF
+  _QWORD v44[2]; // [xsp+488h] [xbp+488h] BYREF
+
+  v2 = (pthread_mutex_t *)((char *)this + 40);
+  v29 = v2;
+  if ( v2 )
+    pthread_mutex_lock(v2);
+  sub_EC570(v41, *((const char **)this + 1), 4);
+  v3 = sub_A9D6C(v42);
+  v4 = v3;
+  if ( !v3 )
+  {
+    ABase::XLog(
+      1,
+      "/Users/bkdevops/bkagent/workspace/p-c3c3015c89d2415ebd4597dc742742fd/src/GCloudSDK-tinia/App/GCloudCore/GCloudCore"
+      "/Dev/GCloudBase/Source/Storage/File/EncryptedIniFileImp.cpp",
+      0x80u,
+      "Load",
+      "config file %s is not exist",
+      *((const char **)this + 1));
+LABEL_21:
+    v4 = 0;
+    goto LABEL_25;
+  }
+  v5 = sub_AD6F4(v41, (__int64)&v33, 12LL);
+  if ( (*(_DWORD *)((_BYTE *)v5 + *(_QWORD *)(*v5 - 24LL) + 32) & 5) != 0 )
+  {
+    ABase::XLog(
+      4,
+      "/Users/bkdevops/bkagent/workspace/p-c3c3015c89d2415ebd4597dc742742fd/src/GCloudSDK-tinia/App/GCloudCore/GCloudCore"
+      "/Dev/GCloudBase/Source/Storage/File/EncryptedIniFileImp.cpp",
+      0x87u,
+      "Load",
+      "config file read headbase failed");
+LABEL_16:
+    sub_ECAE8(v41);
+    goto LABEL_21;
+  }
+  if ( v33 != 2276 )
+  {
+    ABase::XLog(
+      4,
+      "/Users/bkdevops/bkagent/workspace/p-c3c3015c89d2415ebd4597dc742742fd/src/GCloudSDK-tinia/App/GCloudCore/GCloudCore"
+      "/Dev/GCloudBase/Source/Storage/File/EncryptedIniFileImp.cpp",
+      0x8Du,
+      "Load",
+      "config file magic not match file magic is %d, program magic is %d",
+      v33,
+      2276LL);
+    goto LABEL_16;
+  }
+  if ( v34 <= 1u )
+  {
+    ABase::XLog(
+      4,
+      "/Users/bkdevops/bkagent/workspace/p-c3c3015c89d2415ebd4597dc742742fd/src/GCloudSDK-tinia/App/GCloudCore/GCloudCore"
+      "/Dev/GCloudBase/Source/Storage/File/EncryptedIniFileImp.cpp",
+      0x94u,
+      "Load",
+      "config file version not match, file version is %d, program version is %d",
+      v34,
+      2LL);
+    goto LABEL_16;
+  }
+  if ( v35 != 98
+    || (v6 = sub_AD6F4(v41, (__int64)v37, 86LL), (*(_DWORD *)((_BYTE *)v6 + *(_QWORD *)(*v6 - 24LL) + 32) & 5) != 0) )
+  {
+    ABase::XLog(
+      4,
+      "/Users/bkdevops/bkagent/workspace/p-c3c3015c89d2415ebd4597dc742742fd/src/GCloudSDK-tinia/App/GCloudCore/GCloudCore"
+      "/Dev/GCloudBase/Source/Storage/File/EncryptedIniFileImp.cpp",
+      0x9Eu,
+      "Load",
+      "config file read headext failed");
+    goto LABEL_16;
+  }
+  if ( v37[0] != 1 )
+  {
+    ABase::XLog(
+      4,
+      "/Users/bkdevops/bkagent/workspace/p-c3c3015c89d2415ebd4597dc742742fd/src/GCloudSDK-tinia/App/GCloudCore/GCloudCore"
+      "/Dev/GCloudBase/Source/Storage/File/EncryptedIniFileImp.cpp",
+      0xA4u,
+      "Load",
+      "config file Encytion is not TEA, encyption is %d",
+      v37[0]);
+    goto LABEL_16;
+  }
+  if ( v37[1] != 64 )
+  {
+    ABase::XLog(
+      4,
+      "/Users/bkdevops/bkagent/workspace/p-c3c3015c89d2415ebd4597dc742742fd/src/GCloudSDK-tinia/App/GCloudCore/GCloudCore"
+      "/Dev/GCloudBase/Source/Storage/File/EncryptedIniFileImp.cpp",
+      0xAAu,
+      "Load",
+      "config file PubKeyLen is not %d, PubKeyLen is %d",
+      64LL,
+      v37[0]);
+    goto LABEL_16;
+  }
+  if ( v38 != 16 )
+  {
+    ABase::XLog(
+      4,
+      "/Users/bkdevops/bkagent/workspace/p-c3c3015c89d2415ebd4597dc742742fd/src/GCloudSDK-tinia/App/GCloudCore/GCloudCore"
+      "/Dev/GCloudBase/Source/Storage/File/EncryptedIniFileImp.cpp",
+      0xB0u,
+      "Load",
+      "config file Md5Len is not %d, Md5Len is %d",
+      16LL,
+      v38);
+    goto LABEL_16;
+  }
+  v28 = v36;
+  v7 = (char *)operator new[]((int)v36);
+  v8 = sub_AD6F4(v41, (__int64)v7, (int)v28);
+  if ( (*(_DWORD *)((_BYTE *)v8 + *(_QWORD *)(*v8 - 24LL) + 32) & 5) != 0 )
+  {
+    ABase::XLog(
+      4,
+      "/Users/bkdevops/bkagent/workspace/p-c3c3015c89d2415ebd4597dc742742fd/src/GCloudSDK-tinia/App/GCloudCore/GCloudCore"
+      "/Dev/GCloudBase/Source/Storage/File/EncryptedIniFileImp.cpp",
+      0xBBu,
+      "Load",
+      "config file read body failed!");
+    sub_ECAE8(v41);
+LABEL_19:
+    v9 = v7;
+LABEL_20:
+    operator delete[](v9);
+    goto LABEL_21;
+  }
+  sub_ECAE8(v41);
+  ABase::Md5HashBuffer((ABase *)v43, v7, (const char *)v28);
+  if ( memcmp(v43, &v39, 0x10u) )
+  {
+    ABase::XLog(
+      4,
+      "/Users/bkdevops/bkagent/workspace/p-c3c3015c89d2415ebd4597dc742742fd/src/GCloudSDK-tinia/App/GCloudCore/GCloudCore"
+      "/Dev/GCloudBase/Source/Storage/File/EncryptedIniFileImp.cpp",
+      0xCBu,
+      "Load",
+      "config file md5 check failed!");
+    goto LABEL_19;
+  }
+  v44[0] = 0LL;
+  v44[1] = 0LL;
+  ABase::EncryptedIniFileImpl::_GetTeaKey((unsigned int **)this, (unsigned __int8 *)v44, 0x10u);
+  v18 = (char *)operator new[]((int)v28);
+  if ( (unsigned __int8)GCloud::ABase::oi_symmetry_decrypt2(
+                          (GCloud::ABase *)v7,
+                          (const char *)v28,
+                          (char *)v44,
+                          v18,
+                          (char *)&v28,
+                          v19,
+                          v20,
+                          v21,
+                          v26) != 1 )
+  {
+    ABase::XLog(
+      4,
+      "/Users/bkdevops/bkagent/workspace/p-c3c3015c89d2415ebd4597dc742742fd/src/GCloudSDK-tinia/App/GCloudCore/GCloudCore"
+      "/Dev/GCloudBase/Source/Storage/File/EncryptedIniFileImp.cpp",
+      0xDDu,
+      "Load",
+      "config file oi_symmetry_decrypt2 failed!");
+    operator delete[](v7);
+    v9 = v18;
+    goto LABEL_20;
+  }
+  v30 = &byte_18FA48;
+  sub_F50F8((int **)&v30, (int *)v18, (int)v28);
+  operator delete[](v7);
+  operator delete[](v18);
+  v22 = (__int64 *)*((_QWORD *)this + 2);
+  v23 = (__int64 *)*((_QWORD *)this + 3);
+  for ( i = v22; i != v23; ++i )
+  {
+    v25 = i;
+    v27 = v23;
+    sub_F2EBC(v25);
+    v23 = v27;
+  }
+  *((_QWORD *)this + 3) = v22;
+  sub_CFA50((__int64)v40, (unsigned __int8 **)&v30, 8);
+  v31 = &byte_18FA48;
+  while ( 1 )
+  {
+    v16 = sub_C7780(v40, (int **)&v31, v10, v11, v12, v13, v14, v15);
+    if ( !sub_AA174((__int64)v16 + *(_QWORD *)(*v16 - 24LL)) )
+      break;
+    if ( *((_QWORD *)v31 - 3) )
+    {
+      sub_F2B24(&v32, v31);
+      std::vector<std::string>::emplace_back<std::string>((__int64 **)this + 2, &v32);
+      sub_F2EBC(&v32);
+    }
+  }
+  sub_F2EBC((__int64 *)&v31);
+  sub_CE5DC((__int64)v40);
+  sub_F2EBC((__int64 *)&v30);
+LABEL_25:
+  sub_EB538((__int64)v41);
+  ABase::CCritical::~CCritical(&v29);
+  return v4;
+}
